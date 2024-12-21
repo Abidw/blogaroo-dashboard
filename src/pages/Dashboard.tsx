@@ -1,6 +1,6 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
@@ -20,6 +20,19 @@ const Dashboard = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+
+  // Load blogs from localStorage on component mount
+  useEffect(() => {
+    const storedBlogs = localStorage.getItem('blogs');
+    if (storedBlogs) {
+      setBlogs(JSON.parse(storedBlogs));
+    }
+  }, []);
+
+  // Update localStorage whenever blogs change
+  useEffect(() => {
+    localStorage.setItem('blogs', JSON.stringify(blogs));
+  }, [blogs]);
 
   const handleAddBlog = (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,10 +1,25 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState, useEffect } from "react";
+
+interface Blog {
+  id: string;
+  title: string;
+  content: string;
+  date: string;
+}
 
 const Index = () => {
-  // In a real app, this would fetch from an API
-  const blogs = []; // This would be populated from your backend
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+
+  useEffect(() => {
+    // Get blogs from localStorage
+    const storedBlogs = localStorage.getItem('blogs');
+    if (storedBlogs) {
+      setBlogs(JSON.parse(storedBlogs));
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -20,7 +35,7 @@ const Index = () => {
       <main className="container mx-auto px-4 py-8">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {blogs.map((blog) => (
-            <Card key={blog.id}>
+            <Card key={blog.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle>{blog.title}</CardTitle>
               </CardHeader>
