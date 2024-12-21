@@ -6,13 +6,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Trash2 } from "lucide-react";
+import { Trash2, Eye } from "lucide-react";
 
 interface Blog {
   id: string;
   title: string;
   content: string;
   date: string;
+  views?: number;
 }
 
 const Dashboard = () => {
@@ -21,7 +22,6 @@ const Dashboard = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  // Load blogs from localStorage on component mount
   useEffect(() => {
     const storedBlogs = localStorage.getItem('blogs');
     if (storedBlogs) {
@@ -29,7 +29,6 @@ const Dashboard = () => {
     }
   }, []);
 
-  // Update localStorage whenever blogs change
   useEffect(() => {
     localStorage.setItem('blogs', JSON.stringify(blogs));
   }, [blogs]);
@@ -50,6 +49,7 @@ const Dashboard = () => {
       title,
       content,
       date: new Date().toLocaleDateString(),
+      views: 0,
     };
 
     setBlogs([...blogs, newBlog]);
@@ -117,6 +117,7 @@ const Dashboard = () => {
                 <TableRow>
                   <TableHead>Title</TableHead>
                   <TableHead>Date</TableHead>
+                  <TableHead>Views</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -125,6 +126,12 @@ const Dashboard = () => {
                   <TableRow key={blog.id}>
                     <TableCell>{blog.title}</TableCell>
                     <TableCell>{blog.date}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <Eye className="h-4 w-4" />
+                        {blog.views || 0}
+                      </div>
+                    </TableCell>
                     <TableCell>
                       <Button
                         variant="destructive"

@@ -9,6 +9,7 @@ interface Blog {
   title: string;
   content: string;
   date: string;
+  views?: number;
 }
 
 const BlogPost = () => {
@@ -20,7 +21,18 @@ const BlogPost = () => {
     if (storedBlogs) {
       const blogs = JSON.parse(storedBlogs);
       const foundBlog = blogs.find((b: Blog) => b.id === id);
-      setBlog(foundBlog);
+      
+      if (foundBlog) {
+        // Increment views
+        const updatedBlogs = blogs.map((b: Blog) => {
+          if (b.id === id) {
+            return { ...b, views: (b.views || 0) + 1 };
+          }
+          return b;
+        });
+        localStorage.setItem('blogs', JSON.stringify(updatedBlogs));
+        setBlog({ ...foundBlog, views: (foundBlog.views || 0) + 1 });
+      }
     }
   }, [id]);
 
