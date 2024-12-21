@@ -35,19 +35,21 @@ const Index = () => {
       <main className="container mx-auto px-4 py-8">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {blogs.map((blog) => (
-            <Card key={blog.id} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <CardTitle>{blog.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  {blog.content.substring(0, 150)}...
-                </p>
-                <p className="text-sm text-muted-foreground mt-4">
-                  {blog.date}
-                </p>
-              </CardContent>
-            </Card>
+            <Link to={`/blog/${blog.id}`} key={blog.id}>
+              <Card className="hover:shadow-lg transition-shadow h-full">
+                <CardHeader>
+                  <CardTitle>{blog.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    {blog.content.substring(0, 150)}...
+                  </p>
+                  <p className="text-sm text-muted-foreground mt-4">
+                    {blog.date}
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
         
